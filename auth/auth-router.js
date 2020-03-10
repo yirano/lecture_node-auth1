@@ -1,34 +1,42 @@
-const router = require('express').Router();
+const express = require("express")
+const Users = require("../users/users-model")
 
-const Users = require('../users/users-model.js');
+const router = express.Router()
 
-router.post('/register', (req, res) => {
-  let user = req.body;
+router.post("/register", async (req, res, next) => {
+	try {
+		const { username } = req.body
+		const user = await Users.findBy({ username }).first()
 
-  Users.add(user)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
-});
+		if (user) {
+			return res.status(409).json({
+				message: "Username is already taken",
+			})
+		}
 
-router.post('/login', (req, res) => {
-  let { username, password } = req.body;
+		res.status(201).json(await Users.add(req.body))
+	} catch(err) {
+		next(err)
+	}
+})
 
-  Users.findBy({ username })
-    .first()
-    .then(user => {
-      if (user) {
-        res.status(200).json({ message: `Welcome ${user.username}!` });
-      } else {
-        res.status(401).json({ message: 'Invalid Credentials' });
-      }
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
-});
+router.post("/login", async (req, res, next) => {
+	try {
+		const { username, password } = req.body
+		const user = await Users.findBy({ username }).first()
 
-module.exports = router;
+		if (!user) {
+			return res.status(401).json({
+				message: "Invalid Credentials",
+			})
+		}
+
+		res.json({
+			message: `Welcome ${user.username}!`,
+		})
+	} catch(err) {
+		next(err)
+	}
+})
+
+module.exports = router
