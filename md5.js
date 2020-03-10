@@ -1,6 +1,6 @@
 const crypto = require("crypto")
 
-const rounds = 1000000
+const rounds = 1
 const value = "hello world"
 
 console.time("hash time")
