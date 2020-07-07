@@ -13,7 +13,7 @@ router.get("/users", async (req, res, next) => {
 
 router.post("/users", async (req, res, next) => {
 	try {
-		const { username } = req.body
+		const { username, password } = req.body
 		const user = await Users.findBy({ username }).first()
 
 		if (user) {
@@ -22,17 +22,22 @@ router.post("/users", async (req, res, next) => {
 			})
 		}
 
-		res.status(201).json(await Users.add(req.body))
+		const newUser = await Users.add({
+			username,
+			password,
+		})
+
+		res.status(201).json(newUser)
 	} catch(err) {
 		next(err)
 	}
 })
 
-router.post("/users/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
 	try {
 		const { username, password } = req.body
 		const user = await Users.findBy({ username }).first()
-
+		
 		if (!user) {
 			return res.status(401).json({
 				message: "Invalid Credentials",
