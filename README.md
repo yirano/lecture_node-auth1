@@ -31,3 +31,9 @@ Core Principles
 Autorization (AuthZ) "What do you want?"
 When the web server determines the level of access a client has to a resource
 
+Sessions
+- client sends redentials to server
+- server creates a session and sends the session ID to client
+- client stores the session ID locally
+- client includes session ID when calling protected routes
+- server verifies session and provides or denies access
