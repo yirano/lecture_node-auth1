@@ -15,3 +15,19 @@ Guided project for **Node Auth 1** Module.
 - [ ] type `npm run server` to start the API.
 
 Please follow along as the instructor adds authentication to the API.
+
+
+### Lecture Notes
+
+Authentication (AuthN) "Who are you?"
+When the web server verifies the identity of a client
+
+Core Principles
+- Require strong passwords from the user
+- Properly store passwords in the database
+- Prevent brute-force attacks against the database
+- Create a time complexity by hashing a hash over and over again until it takes too long to generate a rainbow table
+
+Autorization (AuthZ) "What do you want?"
+When the web server determines the level of access a client has to a resource
+
